@@ -25,6 +25,12 @@
       <Resource Include="Images\Locations\TownSquare.png" />
       <None Remove="Images\Locations\Trader.png" />
       <Resource Include="Images\Locations\Trader.png" />
+      <None Remove="Images\Monsters\GiantSpider.png" />
+      <Resource Include="Images\Monsters\GiantSpider.png" />
+      <None Remove="Images\Monsters\Rat.png" />
+      <Resource Include="Images\Monsters\Rat.png" />
+      <None Remove="Images\Monsters\Snake.png" />
+      <Resource Include="Images\Monsters\Snake.png" />
     </ItemGroup>
 
 </Project>
