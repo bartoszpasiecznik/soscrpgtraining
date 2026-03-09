@@ -9,7 +9,7 @@ public static class ItemFactory
     {
         _standardGameItems = new List<GameItem>();
         _standardGameItems.Add(new Weapon(1001, "Pointy Stick", 1, 1, 2));
-        _standardGameItems.Add(new Weapon(1001, "Rusty Sword", 5, 1, 3));
+        _standardGameItems.Add(new Weapon(1002, "Rusty Sword", 5, 1, 3));
     }
 
     public static GameItem CreateGameItem(int itemTypeID)
