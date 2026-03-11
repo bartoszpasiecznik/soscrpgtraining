@@ -11,7 +11,7 @@ public class World
         loc.YCoordinate = yCoordinate;
         loc.Name = name;
         loc.Description = description;
-        loc.ImageName = imageName;
+        loc.ImageName = $"/Engine;component/Images/Locations/{imageName}" ;
         
         _locations.Add(loc);
     }
