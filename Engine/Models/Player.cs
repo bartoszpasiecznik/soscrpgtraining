@@ -65,5 +65,23 @@ public class Player : BaseNotificationClass
         Inventory.Add(item);
         OnPropertyChanged(nameof(Weapons));
     }
+
+    public void RemoveItemFromInventory(GameItem item)
+    {
+        Inventory.Remove(item);
+        OnPropertyChanged(nameof(Weapons));
+    }
+
+    public bool HasAllTheseItems(List<ItemQuantity> items)
+    {
+        foreach (ItemQuantity item in items)
+        {
+            if (Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     
 }

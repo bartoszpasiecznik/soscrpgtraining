@@ -25,13 +25,11 @@ public class GameSession : BaseNotificationClass
             OnPropertyChanged(nameof(HasLocationToEast));
             OnPropertyChanged(nameof(HasLocationToSouth));
 
+            CompleteQuestAtLocation();
             GivePlayerQuestsAtLocation();
             GetMonsterAtLocation();
-            //Heal when at home
-            if (CurrentLocation == CurrentWorld.LocationAt(0, -1))
-            {
-                CurrentPlayer.HitPoints = CurrentPlayer.Level * 10; //Heal the player
-            }
+            HealPlayerWhenHome();
+            
         }
     }
 
@@ -118,6 +116,46 @@ public class GameSession : BaseNotificationClass
         }
     }
 
+    private void CompleteQuestAtLocation()
+    {
+        foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
+        {
+            QuestStatus questToComplete = CurrentPlayer.Quests.FirstOrDefault(q =>q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
+            if (questToComplete != null)
+            {
+                if (CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
+                {
+                    foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
+                    {
+                        for (int i = 0; i < itemQuantity.Quantity; i++)
+                        {
+                            CurrentPlayer.RemoveItemFromInventory(CurrentPlayer.Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                        }
+                    }
+                    RaiseMessage("");
+                    RaiseMessage($"Congratulations! You completed the '{quest.Name}' quest!");
+                    
+                    //rewards
+                    CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
+                    RaiseMessage($"You receive {quest.RewardExperiencePoints}  Experience Points!");
+                    
+                    CurrentPlayer.Gold += quest.RewardGold;
+                    RaiseMessage($"You receive {quest.RewardGold} Gold!");
+
+                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                    {
+                        GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                        CurrentPlayer.AddItemToInventory(rewardItem);
+                        RaiseMessage($"You receive {rewardItem.Name}!");
+                    }
+                    
+                    //Mark quest as completed
+                    questToComplete.IsCompleted = true;
+                }
+            }
+        }
+    }
+    
     private void GivePlayerQuestsAtLocation()
     {
         foreach (Quest quest in CurrentLocation.QuestsAvailableHere )
@@ -125,6 +163,22 @@ public class GameSession : BaseNotificationClass
             if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
             {
                 CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                RaiseMessage("");
+                RaiseMessage($"You received the {quest.Name} quest!");
+                RaiseMessage(quest.Description);
+                
+                RaiseMessage("Return with:");
+                foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
+                {
+                    RaiseMessage($"{itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}!");
+                }
+                RaiseMessage("And you will recieve:");
+                RaiseMessage($"{quest.RewardExperiencePoints} Experience Points!");
+                RaiseMessage($"{quest.RewardGold} Gold!");
+                foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                {
+                    RaiseMessage($"{itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name}!");
+                }
             }
         }
     }
@@ -201,6 +255,14 @@ public class GameSession : BaseNotificationClass
             }
         }
         
+    }
+
+    private void HealPlayerWhenHome()
+    {
+        if (CurrentLocation == CurrentWorld.LocationAt(0, -1))
+        {
+            CurrentPlayer.HitPoints = CurrentPlayer.Level * 10; //Heal the player
+        }
     }
     
     private void RaiseMessage(string message)
