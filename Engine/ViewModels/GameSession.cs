@@ -13,6 +13,7 @@ public class GameSession : BaseNotificationClass
     
     private Location _currentLocation;
     private Monster _currentMonster;
+    private Trader _currentTrader;
     public Player CurrentPlayer { get; set; }
 
     public Location CurrentLocation
@@ -29,7 +30,9 @@ public class GameSession : BaseNotificationClass
             GivePlayerQuestsAtLocation();
             GetMonsterAtLocation();
             HealPlayerWhenHome();
-            
+
+            CurrentTrader = CurrentLocation.TraderHere;
+
         }
     }
 
@@ -53,6 +56,19 @@ public class GameSession : BaseNotificationClass
     
     public bool HasMonster => CurrentMonster != null;
 
+    public Trader CurrentTrader
+    {
+        get { return _currentTrader; }
+        set
+        {
+            _currentTrader = value;
+            OnPropertyChanged(nameof(CurrentTrader));
+            OnPropertyChanged(nameof(HasTrader));
+        }
+    }
+    
+    public bool HasTrader => CurrentTrader != null;
+    
     public Weapon CurrentWeapon{get; set;}
     
     public bool HasLocationToNorth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
