@@ -1,51 +1,57 @@
 ﻿using System.Windows;
 using Engine.Models;
 using Engine.ViewModels;
-
-namespace WPFUI;
-
-public partial class TradeScreen : Window
+ 
+namespace WPFUI
 {
-    public GameSession Session => DataContext as GameSession;
-    
-    public TradeScreen()
+    /// <summary>
+    /// Interaction logic for TradeScreen.xaml
+    /// </summary>
+    public partial class TradeScreen : Window
     {
-        InitializeComponent();
-    }
-
-    private void OnClick_Sell(object sender, RoutedEventArgs e)
-    {
-        GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
-
-        if (item != null)
+        public GameSession Session => DataContext as GameSession;
+ 
+        public TradeScreen()
         {
-            Session.CurrentPlayer.Gold += item.Price;
-            Session.CurrentTrader.AddItemToInventory(item);
-            Session.CurrentPlayer.RemoveItemFromInventory(item);
+            InitializeComponent();
         }
-    }
-
-    private void OnClick_Buy(object sender, RoutedEventArgs e)
-    {
-        GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
-        
-        if (item != null)
+ 
+        private void OnClick_Sell(object sender, RoutedEventArgs e)
         {
-            if (Session.CurrentPlayer.Gold >= item.Price)
+            GroupedInventoryItem groupedInventoryItem = 
+                ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
+ 
+            if(groupedInventoryItem != null)
             {
-                Session.CurrentPlayer.Gold -= item.Price;
-                Session.CurrentTrader.RemoveItemFromInventory(item);
-                Session.CurrentPlayer.AddItemToInventory(item);
-            }
-            else
-            {
-                MessageBox.Show("You do not have enough gold!");
+                Session.CurrentPlayer.Gold += groupedInventoryItem.Item.Price;
+                Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
+                Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
         }
-    }
-
-    private void OnClick_Close(object sender, RoutedEventArgs e)
-    {
-        Close();
+ 
+        private void OnClick_Buy(object sender, RoutedEventArgs e)
+        {
+            GroupedInventoryItem groupedInventoryItem = 
+                ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
+ 
+            if(groupedInventoryItem != null)
+            {
+                if(Session.CurrentPlayer.Gold >= groupedInventoryItem.Item.Price)
+                {
+                    Session.CurrentPlayer.Gold -= groupedInventoryItem.Item.Price;
+                    Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
+                    Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
+                }
+                else
+                {
+                    MessageBox.Show("You do not have enough gold");
+                }
+            }
+        }
+ 
+        private void OnClick_Close(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
