@@ -11,7 +11,7 @@ public class Player : LivingEntity
     public string CharacterClass
     {
         get  { return _characterClass; } 
-        set{ _characterClass = value; OnPropertyChanged(nameof(CharacterClass)); }
+        set{ _characterClass = value; OnPropertyChanged(); }
     }
 
     public int ExperiencePoints
@@ -20,12 +20,12 @@ public class Player : LivingEntity
         private set
         {
             _experiencePoints = value; 
-            OnPropertyChanged(nameof(ExperiencePoints));
+            OnPropertyChanged();
             SetLevelAndMaximumHitPoints();
         }
     }
     
-    public ObservableCollection<QuestStatus> Quests { get; set; }
+    public ObservableCollection<QuestStatus> Quests { get; }
 
     public EventHandler OnLeveledUp;
 

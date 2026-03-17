@@ -3,13 +3,16 @@
 public class QuestStatus: BaseNotificationClass
 {
     bool _isCompleted;
-    public Quest PlayerQuest { get; set; }
+    public Quest PlayerQuest { get; }
 
     public bool IsCompleted
     {
         get{ return _isCompleted; } 
         set{
-            _isCompleted = value; OnPropertyChanged(nameof(IsCompleted));}
+            _isCompleted = value;
+            OnPropertyChanged();
+            
+        }
     }
 
     public QuestStatus(Quest quest)
