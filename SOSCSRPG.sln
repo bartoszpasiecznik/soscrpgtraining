@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFUI", "WPFUI\WPFUI.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{AD7C0458-2F9A-4C88-9F6F-9979D15D84EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEngine", "TestEngine\TestEngine.csproj", "{AEC58DA9-11ED-444B-AA03-BD1BF616FC5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{AD7C0458-2F9A-4C88-9F6F-9979D15D84EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD7C0458-2F9A-4C88-9F6F-9979D15D84EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7C0458-2F9A-4C88-9F6F-9979D15D84EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC58DA9-11ED-444B-AA03-BD1BF616FC5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC58DA9-11ED-444B-AA03-BD1BF616FC5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC58DA9-11ED-444B-AA03-BD1BF616FC5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC58DA9-11ED-444B-AA03-BD1BF616FC5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
