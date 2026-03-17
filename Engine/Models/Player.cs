@@ -7,7 +7,6 @@ public class Player : LivingEntity
 {
     private string _characterClass;
     private int _experiencePoints;
-    private int _level;
 
     public string CharacterClass
     {
@@ -18,16 +17,17 @@ public class Player : LivingEntity
     public int ExperiencePoints
     {
         get{return _experiencePoints;}
-        set{_experiencePoints = value; OnPropertyChanged(nameof(ExperiencePoints)); }
-    }
-
-    public int Level
-    {
-        get{return _level;}
-        set{ _level = value; OnPropertyChanged(nameof(Level)); }
+        private set
+        {
+            _experiencePoints = value; 
+            OnPropertyChanged(nameof(ExperiencePoints));
+            SetLevelAndMaximumHitPoints();
+        }
     }
     
     public ObservableCollection<QuestStatus> Quests { get; set; }
+
+    public EventHandler OnLeveledUp;
 
     public Player(string name, string characterClass, int experiencePoints, int maximumHitPoints, int currentHitPoints, int gold):
         base(name, maximumHitPoints, currentHitPoints, gold)
@@ -47,6 +47,23 @@ public class Player : LivingEntity
             }
         }
         return true;
+    }
+
+    public void AddExperience(int experiencePoints)
+    {
+        ExperiencePoints += experiencePoints;
+    }
+
+    public void SetLevelAndMaximumHitPoints()
+    {
+        int originalLevel = Level;
+        Level = (ExperiencePoints / 100) + 1;
+
+        if (Level != originalLevel)
+        {
+            MaximumHitPoints = Level * 10;
+            OnLeveledUp?.Invoke(this, System.EventArgs.Empty);
+        }
     }
     
 }
